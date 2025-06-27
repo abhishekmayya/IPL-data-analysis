@@ -81,7 +81,7 @@ def get_years():
 # Define user_login and admin_login functions
 def user_login(username, password):
     try:
-        connection = psycopg2.connect(dbname=dbname, user=user, password=db_password, host=host)
+        connection = init_connection()
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
         valid = cursor.fetchone() is not None
@@ -94,7 +94,7 @@ def user_login(username, password):
 
 def admin_login(username, password):
     try:
-        connection = psycopg2.connect(dbname=dbname, user=user, password=db_password, host=host)
+        connection = init_connection()
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM admin WHERE username = %s AND password = %s", (username, password))
         valid = cursor.fetchone() is not None
@@ -108,7 +108,7 @@ def admin_login(username, password):
 # Define the registration function
 def register_user(username, password):
     try:
-        connection = psycopg2.connect(dbname=dbname, user=user, password=db_password, host=host)
+        connection = init_connection()
         cursor = connection.cursor()
         cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, password))
         connection.commit()
