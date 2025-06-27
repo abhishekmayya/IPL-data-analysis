@@ -1,3 +1,7 @@
 psycopg2
+streamlit
+pandas
+numpy
 plotly
+matplotlib
 seaborn

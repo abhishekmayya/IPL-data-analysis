@@ -5,12 +5,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-##initization of database for login/registration queries
-dbname = "ipldatabase"
-user = "postgres"
-db_password = "postgres"
-host = "localhost"
+import os
 
 # Set page title
 st.set_page_config(page_title="IPL Dashboard", page_icon="🏏",layout="centered")
@@ -36,9 +31,22 @@ st.markdown(background_style, unsafe_allow_html=True)
 
 # Initialize connection.
 # Uses st.cache_resource to only run once.
-@st.cache_resource(max_entries=1, ttl=600)
+# @st.cache_resource(max_entries=1, ttl=600)
+# def init_connection():
+#     return psycopg2.connect(**st.secrets["postgres"])
+
+# conn = init_connection()
+
+@st.cache_resource
 def init_connection():
-    return psycopg2.connect(**st.secrets["postgres"])
+    return psycopg2.connect(
+        host=os.environ["PGHOST"],
+        dbname=os.environ["PGDATABASE"],
+        user=os.environ["PGUSER"],
+        password=os.environ["PGPASSWORD"],
+        port=os.environ.get("PGPORT", 5432),
+        sslmode=os.environ.get("PGSSLMODE", "require")
+    )
 
 conn = init_connection()
 
@@ -710,9 +718,6 @@ else:
                     st.write(bowlers_data)
                 else:
                     st.write("No data available for the selected year.")
-
-        
-
     
  
 
